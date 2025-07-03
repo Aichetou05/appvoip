@@ -2,7 +2,9 @@ package com.voip.appvoip.entities;
 
 import java.time.LocalDateTime;
 
-import com.voip.appvoip.enums.Role;
+
+import com.voip.appvoip.enums.CallStatus;
+import com.voip.appvoip.enums.CallType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,9 +12,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -20,21 +23,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class User {
-    
+public class Call {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String email;
-    private String password;
+    @ManyToOne
+    private User cller;
+
+    @ManyToOne
+    private User receiver;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private CallType callType;
 
-    private String sipEtension;
-    private String sipPassword;
-    private String jitsiToken;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Enumerated(EnumType.STRING)
+    private CallStatus status;
+
 }
